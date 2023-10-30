@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madhan</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<style>
+  .button-on{
+    background-color: aqua;
+    color: wheat;
+  }
+  .button-off{
+    background-color: rgb(251, 0, 255);
+    color: rgb(235, 211, 168);
+  }
+
+  .slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #04AA6D;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #04AA6D;
+  cursor: pointer;
+}
+
+</style>
+
+</head>
+<body style="background-image:url('img5.jpg');background-size:cover;">
+  <ul class="nav justify-content-center" style="background-color: bisque;">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+  </li>
+  
+  <li class="nav-item">
+    <a class="nav-link"  href="about.html">About us</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active"  href="table.html">Look Table</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link"  href="weather.html">weather Info</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link"  href="status.htm">Status</a>
+  </li>
+  
+</ul> 
+
+
+
+    <h1 style="color:rgb(5, 243, 9);text-align: center;">🔥🔥MOPI'S World🔥🔥</h1>
+ <!-- <div style="height:auto;width: 290px;border-radius: 10px;background-color: rgb(231, 135, 79);position: fixed;left: 50%;top:50%;transform: translate(-50%,-50%);;">
+   <label>switch-1</label> 
+   <br>
+  <input type="text" id="textinput" value="">
+  <button  style="border-radius: 10px;width: 60px;border-bottom-color: rgb(233, 230, 238);border-bottom-width: 3px;" onclick="exec()">upload</button>
+
+   
+</div> -->
+
+
+<br> <br>
+
+<!-- //----------------------- -->
+<div class="container">
+  
+<div class="row" >
+  <div class="col-sm-6 mb-3 mb-sm-0" >
+    <div class="card text-bg-danger">
+      <div class="card-body">
+        <h5 class="card-title">Switch-1</h5>
+        
+        <p class="card-text">Get result in true/false format..</p>
+        <p class="card-text"> Switch currently 👇</p>
+        <button  style="border-radius: 20px;height: 50px;width:100%;" id="togglebutton" onclick="toggle()" class="button-off">Of</button>
+ 
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card text-bg-warning">
+      <div class="card-body">
+        <h5 class="card-title">Wanna input directly</h5>
+        <p class="card-text">Custom input..</p>
+        <p class="card-text"><input type="text" id="textinput" style="width:100%;" value=""></p>
+
+        <button class="text-bg-info"  style="border-radius: 20px;height:50px;width: 100%;" onclick="exec()">Send</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- add new  -->
+<br>
+<br>
+<div class="row" >
+  <div class="col-sm-6 mb-3 mb-sm-0" >
+    <div class="card text-bg-danger">
+      <div class="card-body">
+        <h5 class="card-title">Slider-1</h5>
+        
+        <p class="card-text">Input for speed control</p>
+       
+        <div class="slidecontainer">
+          <input value="" style="background-color: black;" type="range" min="1" max="100" value="1" class="slider" id="myRange">
+          <p>Value: <span id="demo"></span></p>
+        </div>
+        <button class="text-bg-success"  style="border-radius: 20px;height:50px;width: 100%;" onclick="exec()">upload</button>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card text-bg-warning">
+      <div class="card-body">
+        <h5 class="card-title">Wanna set time directly</h5>
+        <p class="card-text">Custom Date & Time input..</p>
+        <p class="card-text"><input type="datetime-local"Value="" id="settime"></p>
+
+        <button class="text-bg-success"  style="border-radius: 20px;height:50px;width: 100%;" onclick="exec()">Set</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- //--------
+
+//--------- -->
+
+  <script>
+    let state=false;
+    let switch2=null;
+    //------------------------------
+    document.addEventListener("DOMContentLoaded",()=>{
+      exec();
+    })
+    //-----------------------------------
+    //slider
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+    output.innerHTML = this.value;
+    }
+    //time and date input
+    
+  
+    //---------------
+   function toggle() {
+    state=!state;
+    if(state)
+    {
+      document.getElementById("togglebutton").textContent="On";
+      document.getElementById("togglebutton").classList.remove("button-off");
+      document.getElementById("togglebutton").classList.add("button-on");
+      exec();
+
+    }
+    else{
+      
+      document.getElementById("togglebutton").textContent="Off";
+      document.getElementById("togglebutton").classList.remove("button-on");
+      document.getElementById("togglebutton").classList.add("button-off");
+      exec()
+    }
+    
+   }
+   //-----------------------
+
+    function exec() {
+    var url=`https://dweet.io/dweet/for/madhanbk24?switch1=START1:${state}:END1&switch2=START2:${document.getElementById("textinput").value}:END2&switch3=START3:${slider.value}:END3&switch4=START4:${document.getElementById('settime').value}:END4`;
+      fetch(url)
+      .then(data=>{
+  
+      //window.location.reload();
+      })
+      .catch(err=>{
+        alert(`Some Error Occured:${err}`);
+        console.error(err);})
+    
+      url=`https://docs.google.com/forms/d/e/1FAIpQLSdl-H9Zz6CKtRmPR0c64S2pTUiVmgbXgF-fhK6wj9WoLTtCDQ/formResponse?&submit=Submit?usp=pp_url&entry.1708705504=${state?1:0}&entry.1838960916=${document.getElementById("textinput").value}&entry.1284040073=${slider.value}&entry.1501411547=${document.getElementById('settime').value}`;
+      fetch(url)
+      .then(data=>{
+  
+      //window.location.reload();
+      })
+      .catch(err=>{
+        //alert(`Some Error Occured in form:${err}`);
+        console.error(err);})
+    
+      }
+  </script>
+
+
+    
+</body>
+</html>

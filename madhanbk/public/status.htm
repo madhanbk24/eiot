@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(1px) brightness(0.3);
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #fff;
+            margin: 0 20px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        .left, .right {
+            flex: 1;
+            padding: 20px;
+            position: relative;
+            background: transparent;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            transition: background 0.5s;
+        }
+
+        .left h2, .right h2 {
+            font-size: 24px;
+            margin: 0 0 20px;
+            text-align: center;
+        }
+
+        .form-container {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .form-container h3 {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        .form-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .form-container button {
+            background: #0099cc;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .right {
+            margin-left: 10px;
+        }
+
+        .right h2 {
+            font-size: 24px;
+            margin: 0 0 20px;
+            text-align: center;
+        }
+
+        .right p {
+            font-size: 18px;
+            margin: 0 0 10px;
+        }
+
+        .left::before, .right::before {
+            content: "";
+            background: url('img.jpg');
+            opacity: 0.5;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Toast styles */
+        .toast-container {
+            position: absolute;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .toast {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            position: relative;
+            z-index: 99999;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop>
+        <source src="video3.mp4" type="video/mp4">
+    </video>
+    <div class="navbar">
+        <a href="index.html">&#8592; Back</a>
+    </div>
+    <div class="container">
+        <div class="left">
+            <div class="form-container">
+                <h2>Enter Crop Details</h2>
+                <h3>Number of Days for Crop 1</h3>
+                <input type="text" id="crop1DaysInput" placeholder="Enter number of days for Crop 1">
+                <h3>Number of Days for Crop 2</h3>
+                <input type="text" id="crop2DaysInput" placeholder="Enter number of days for Crop 2">
+                <button onclick="sendDataToThingspeak()">Submit</button>
+            </div>
+        </div>
+        <div class="right">
+            <h2>Status of Motors</h2>
+            <div id="motor1Status">Motor 1: Loading...</div>
+            <div id="motor2Status">Motor 2: Loading...</div>
+            <div id="motor1Next">Motor 1 Next ON: Loading...</div>
+            <div id="motor2Next">Motor 2 Next ON: Loading...</div>
+            <div id="Temp">Temp: Loading...</div>
+            <div id="Humidity">Humidity: Loading...</div>
+            <div id="Israining">Is Raining: Loading...</div>
+            <div id="curr-time">Curr Time: Loading...</div>
+        </div>
+    </div>
+    <div class="toast-container">
+        <div class="toast" id="toast">Data submitted successfully</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function sendDataToThingspeak() {
+            const crop1Days = document.getElementById('crop1DaysInput').value;
+            const crop2Days = document.getElementById('crop2DaysInput').value;
+
+            const apiKey = "U7VFOGRRGGB5I2EC";
+            const field1Value = crop1Days;
+            const field2Value = crop2Days;
+
+            axios.get(`https://api.thingspeak.com/update?api_key=U7VFOGRRGGB5I2EC&field1=${field1Value}&field2=${field2Value}`)
+                .then(response => {
+                    if (response.data > 0) {
+                        showToast("Registered successfully");
+                        clearInputFields(); // Clear input fields
+                    } else {
+                        showToast("Please try again after some time");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error sending data to Thingspeak:", error);
+                    showToast("😔Failed to submit data. Please try again later. Check your Internet Connection 😔");
+                });
+        }
+
+        function clearInputFields() {
+            document.getElementById('crop1DaysInput').value = ''; // Clear input field for Crop 1
+            document.getElementById('crop2DaysInput').value = ''; // Clear input field for Crop 2
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.style.display = "block";
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 3000);
+        }
+
+        function fetchMotorStatus() {
+            axios.get("https://api.thingspeak.com/channels/2304722/feeds.json?results=1")
+                .then(response => {
+                    if (response.data.feeds.length > 0) {
+                        const data = response.data.feeds[0];
+                        document.getElementById("motor1Status").textContent = `Motor 1: ${data.field1}`;
+                        document.getElementById("motor2Status").textContent = `Motor 2: ${data.field2}`;
+                        document.getElementById("motor1Next").textContent = `Motor 1 Next ON: ${data.field3}`;
+                        document.getElementById("motor2Next").textContent = `Motor 2 Next ON: ${data.field4}`;
+                        document.getElementById("curr-time").textContent = `Curr Time: ${data.field5}`;
+                        document.getElementById("Temp").textContent = `Temp: ${data.field6}`;
+                        document.getElementById("Humidity").textContent = `Humidity: ${data.field7}`;
+                        document.getElementById("Israining").textContent = `Is Raining: ${data.field8}`;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching motor status:", error);
+                });
+        }
+
+        // Fetch motor status initially and every 5 seconds
+        fetchMotorStatus();
+        setInterval(fetchMotorStatus, 1000);
+    </script>
+</body>
+</html>
